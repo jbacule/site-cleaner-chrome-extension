@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Page for Site Cleaner Extension</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #667eea;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #764ba2;
+    }
+    .info {
+      background: #e7f3ff;
+      padding: 10px;
+      border-left: 4px solid #2196F3;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Site Cleaner Extension Test Page</h1>
+  
+  <div class="section">
+    <h2>Test Data Setup</h2>
+    <p>Click the buttons below to populate browser storage:</p>
+    <button onclick="setLocalStorage()">Set localStorage</button>
+    <button onclick="setCookie()">Set Cookie</button>
+    <button onclick="setSessionStorage()">Set sessionStorage</button>
+    <button onclick="checkAll()">Check All Data</button>
+  </div>
+
+  <div class="section">
+    <h2>Current Data Status</h2>
+    <div id="status" class="info">
+      Click "Check All Data" to see current storage status
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Instructions</h2>
+    <ol>
+      <li>Click the buttons above to set test data</li>
+      <li>Open the Site Cleaner extension (click the extension icon)</li>
+      <li>Try clearing different types of data</li>
+      <li>Come back to this page and click "Check All Data" to verify</li>
+    </ol>
+  </div>
+
+  <script>
+    function setLocalStorage() {
+      localStorage.setItem('testKey', 'testValue');
+      localStorage.setItem('anotherKey', 'anotherValue');
+      alert('localStorage data set!');
+      checkAll();
+    }
+
+    function setCookie() {
+      document.cookie = "testCookie=testValue; path=/";
+      document.cookie = "anotherCookie=anotherValue; path=/";
+      alert('Cookies set!');
+      checkAll();
+    }
+
+    function setSessionStorage() {
+      sessionStorage.setItem('testSession', 'sessionValue');
+      sessionStorage.setItem('anotherSession', 'anotherSessionValue');
+      alert('sessionStorage data set!');
+      checkAll();
+    }
+
+    function checkAll() {
+      const status = document.getElementById('status');
+      let html = '<h3>Storage Status:</h3>';
+      
+      // Check localStorage
+      html += '<p><strong>localStorage:</strong> ';
+      if (localStorage.length > 0) {
+        html += `${localStorage.length} item(s) - `;
+        const items = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          items.push(`${key}="${localStorage.getItem(key)}"`);
+        }
+        html += items.join(', ');
+      } else {
+        html += 'Empty ✓';
+      }
+      html += '</p>';
+
+      // Check sessionStorage
+      html += '<p><strong>sessionStorage:</strong> ';
+      if (sessionStorage.length > 0) {
+        html += `${sessionStorage.length} item(s) - `;
+        const items = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          items.push(`${key}="${sessionStorage.getItem(key)}"`);
+        }
+        html += items.join(', ');
+      } else {
+        html += 'Empty ✓';
+      }
+      html += '</p>';
+
+      // Check cookies
+      html += '<p><strong>Cookies:</strong> ';
+      if (document.cookie) {
+        html += document.cookie;
+      } else {
+        html += 'Empty ✓';
+      }
+      html += '</p>';
+
+      status.innerHTML = html;
+    }
+
+    // Check on page load
+    window.onload = checkAll;
+  </script>
+</body>
+</html>
