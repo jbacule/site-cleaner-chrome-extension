@@ -45,8 +45,8 @@ async function clearCookies() {
     const tab = await getCurrentTab();
     const url = new URL(tab.url);
     
-    // Get all cookies for the current domain
-    const cookies = await chrome.cookies.getAll({ domain: url.hostname });
+    // Get all cookies for the current URL
+    const cookies = await chrome.cookies.getAll({ url: tab.url });
     
     // Remove each cookie
     for (const cookie of cookies) {
@@ -119,7 +119,7 @@ async function clearAll() {
     });
 
     // Clear cookies
-    const cookies = await chrome.cookies.getAll({ domain: url.hostname });
+    const cookies = await chrome.cookies.getAll({ url: tab.url });
     for (const cookie of cookies) {
       const protocol = cookie.secure ? 'https:' : 'http:';
       await chrome.cookies.remove({
